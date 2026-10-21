@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JARVIS AI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <section class="panel stage" aria-label="Núcleo">
+    <svg id="core" class="core" data-state="IDLE" viewBox="0 0 200 200" role="img" aria-label="Núcleo holográfico">
+      <g class="waves"><circle class="w w1" cx="100" cy="100" r="30"/><circle class="w w2" cx="100" cy="100" r="30"/></g>
+      <g class="ring r1"><circle cx="100" cy="100" r="92" stroke-dasharray="3 9"/></g>
+      <g class="ring r2"><circle cx="100" cy="100" r="78" stroke-dasharray="46 14 10 14" stroke-width="3"/></g>
+      <g class="ring r3"><circle cx="100" cy="100" r="62" stroke-dasharray="2 5"/></g>
+      <g class="ring r4"><circle cx="100" cy="100" r="48" stroke-dasharray="20 28" stroke-width="2.5"/></g>
+      <circle class="heart" cx="100" cy="100" r="20"/>
+    </svg>
+    <h1 id="name">JARVIS</h1>
+    <p id="state" class="state" aria-live="polite">IDLE</p>
+    <div class="chips" id="chips">
+      <button data-q="¿Qué hora es?">Hora</button><button data-q="¿Qué fecha es hoy?">Fecha</button>
+      <button data-q="Iniciar temporizador 5 minutos">Temporizador 5 min</button><button data-q="Abrir Google">Abrir Google</button>
+      <button data-q="Ayúdame">Ayuda</button><button data-q="Explícame qué es un agujero negro en tres frases">Pregunta a Gemini</button>
+    </div>
+  </section>
+
+  <section class="panel chat" aria-label="Conversación">
+    <div id="log" class="log" aria-live="polite"></div>
+    <div class="bar">
+      <input id="input" type="text" maxlength="800" placeholder="Escribe o dicta tu mensaje" autocomplete="off" aria-label="Mensaje">
+      <button id="mic" title="Dictar" aria-label="Dictar">🎤</button>
+      <button id="send" class="go">Enviar</button>
+    </div>
+    <div class="tools">
+      <button id="voice">Voz: sí</button><button id="stop">Detener voz</button><button id="clear">Borrar historial</button>
+    </div>
+  </section>
+
+  <aside class="panel side" aria-label="Notas y temporizador">
+    <h2>Temporizador</h2>
+    <div class="timer"><output id="tdisp">00:00</output>
+      <button id="tpause">Pausar</button><button id="tcancel">Cancelar</button></div>
+    <h2>Notas</h2>
+    <div class="bar"><input id="ninput" type="text" maxlength="200" placeholder="Nueva nota" aria-label="Nueva nota"><button id="nadd">Guardar</button></div>
+    <ul id="notes" class="notes"></ul>
+  </aside>
+</main>
+<div id="toast" class="toast" role="status"></div>
+<script src="script.js"></script>
+</body>
+</html>

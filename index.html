@@ -4,47 +4,71 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JARVIS AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%2338e1ff' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%2338e1ff'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="cyan">
+<div class="bg"></div><div class="scan"></div>
+<header class="hud">
+  <strong class="logo">J.A.R.V.I.S</strong>
+  <span class="pill" id="clock">--:--</span>
+  <span class="pill" id="net" data-s="warn">GEMINI: …</span>
+  <span class="pill" id="quota">HOY: 0 consultas</span>
+  <select id="theme" aria-label="Tema de color"><option value="cyan">Cian</option><option value="amber">Ámbar</option><option value="violet">Violeta</option></select>
+</header>
 <main class="app">
   <section class="panel stage" aria-label="Núcleo">
-    <svg id="core" class="core" data-state="IDLE" viewBox="0 0 200 200" role="img" aria-label="Núcleo holográfico">
-      <g class="waves"><circle class="w w1" cx="100" cy="100" r="30"/><circle class="w w2" cx="100" cy="100" r="30"/></g>
-      <g class="ring r1"><circle cx="100" cy="100" r="92" stroke-dasharray="3 9"/></g>
-      <g class="ring r2"><circle cx="100" cy="100" r="78" stroke-dasharray="46 14 10 14" stroke-width="3"/></g>
-      <g class="ring r3"><circle cx="100" cy="100" r="62" stroke-dasharray="2 5"/></g>
-      <g class="ring r4"><circle cx="100" cy="100" r="48" stroke-dasharray="20 28" stroke-width="2.5"/></g>
-      <circle class="heart" cx="100" cy="100" r="20"/>
-    </svg>
+    <div class="orb">
+      <div class="sweep"></div>
+      <svg id="core" class="core" data-state="IDLE" viewBox="0 0 240 240" role="img" aria-label="Núcleo holográfico">
+        <defs><radialGradient id="glow"><stop offset="0" stop-color="var(--cy)" stop-opacity=".95"/><stop offset="1" stop-color="var(--bl)" stop-opacity=".05"/></radialGradient></defs>
+        <g class="waves"><circle class="w w1" cx="120" cy="120" r="34"/><circle class="w w2" cx="120" cy="120" r="34"/></g>
+        <g class="ring r1"><circle cx="120" cy="120" r="112" stroke-dasharray="1 6.6" stroke-width="7"/></g>
+        <g class="ring r2"><circle cx="120" cy="120" r="100" stroke-dasharray="120 26 60 26" stroke-width="3.5"/></g>
+        <circle class="thin" cx="120" cy="120" r="88"/>
+        <g class="ring r3"><circle cx="120" cy="120" r="76" stroke-dasharray="4 10"/></g>
+        <g class="ring r4"><circle cx="120" cy="120" r="62" stroke-dasharray="90 38" stroke-width="3"/></g>
+        <g class="ring r5"><circle cx="120" cy="120" r="48" stroke-dasharray="2 5"/></g>
+        <circle class="heart" cx="120" cy="120" r="26" fill="url(#glow)"/><circle class="dot" cx="120" cy="120" r="8"/>
+      </svg>
+    </div>
     <h1 id="name">JARVIS</h1>
     <p id="state" class="state" aria-live="polite">IDLE</p>
     <div class="chips" id="chips">
       <button data-q="¿Qué hora es?">Hora</button><button data-q="¿Qué fecha es hoy?">Fecha</button>
-      <button data-q="Iniciar temporizador 5 minutos">Temporizador 5 min</button><button data-q="Abrir Google">Abrir Google</button>
-      <button data-q="Ayúdame">Ayuda</button><button data-q="Explícame qué es un agujero negro en tres frases">Pregunta a Gemini</button>
+      <button data-q="Temporizador 5 minutos">⏱ 5 min</button><button data-q="Abrir YouTube">YouTube</button>
+      <button data-q="Calcula (12+8)*3">Calcular</button><button data-q="Tira un dado">Dado</button>
+      <button data-q="Ayuda">Ayuda</button><button data-q="Dame tres ideas para organizar mi semana de estudio">Pregunta a Gemini</button>
     </div>
   </section>
 
   <section class="panel chat" aria-label="Conversación">
     <div id="log" class="log" aria-live="polite"></div>
     <div class="bar">
-      <input id="input" type="text" maxlength="800" placeholder="Escribe o dicta tu mensaje" autocomplete="off" aria-label="Mensaje">
+      <input id="input" type="text" maxlength="800" placeholder="Escribe, dicta o pulsa «/» para enfocar" autocomplete="off" aria-label="Mensaje">
       <button id="mic" title="Dictar" aria-label="Dictar">🎤</button>
       <button id="send" class="go">Enviar</button>
     </div>
-    <div class="tools">
-      <button id="voice">Voz: sí</button><button id="stop">Detener voz</button><button id="clear">Borrar historial</button>
-    </div>
   </section>
 
-  <aside class="panel side" aria-label="Notas y temporizador">
-    <h2>Temporizador</h2>
-    <div class="timer"><output id="tdisp">00:00</output>
-      <button id="tpause">Pausar</button><button id="tcancel">Cancelar</button></div>
-    <h2>Notas</h2>
-    <div class="bar"><input id="ninput" type="text" maxlength="200" placeholder="Nueva nota" aria-label="Nueva nota"><button id="nadd">Guardar</button></div>
-    <ul id="notes" class="notes"></ul>
+  <aside class="panel side" aria-label="Herramientas">
+    <nav class="tabs"><button data-tab="timer" class="on">Temporizador</button><button data-tab="notes">Notas</button><button data-tab="cfg">Ajustes</button></nav>
+    <div class="tab" id="tab-timer">
+      <output id="tdisp">00:00</output>
+      <div class="row"><button id="tpause">Pausar</button><button id="tcancel">Cancelar</button></div>
+      <p class="hint">Di «temporizador 10 minutos» o usa los accesos rápidos.</p>
+    </div>
+    <div class="tab" id="tab-notes" hidden>
+      <div class="bar"><input id="ninput" type="text" maxlength="200" placeholder="Nueva nota" aria-label="Nueva nota"><button id="nadd">Guardar</button></div>
+      <ul id="notes" class="notes"></ul>
+    </div>
+    <div class="tab" id="tab-cfg" hidden>
+      <label>Voz <select id="vsel"></select></label>
+      <label>Velocidad <input id="rate" type="range" min="0.6" max="1.6" step="0.1" value="1"></label>
+      <div class="row"><button id="voice">Voz: sí</button><button id="stop">Detener voz</button></div>
+      <div class="row"><button id="export">Exportar chat</button><button id="clear">Borrar historial</button></div>
+      <p class="hint">Atajos: «/» enfoca el chat · Esc detiene la voz. Todo se guarda solo en este navegador.</p>
+    </div>
   </aside>
 </main>
 <div id="toast" class="toast" role="status"></div>
